@@ -191,6 +191,44 @@ function logout(){
 
 </script>
 
+<script>
 
+// ===== SAVE DATA PAR JOUR =====
+
+function saveData(){
+
+let now=new Date();
+
+let data={
+date:now.toLocaleDateString(),
+time:now.toLocaleTimeString(),
+temp:(30+Math.random()*15).toFixed(1),
+current:(4+Math.random()*3).toFixed(2),
+voltage:(210+Math.random()*20).toFixed(0),
+vibration:(1+Math.random()*5).toFixed(2)
+};
+
+let archive=
+JSON.parse(localStorage.getItem("motorArchive"))||{};
+
+let today=data.date;
+
+if(!archive[today]){
+archive[today]=[];
+}
+
+archive[today].push(data);
+
+localStorage.setItem(
+"motorArchive",
+JSON.stringify(archive)
+);
+
+}
+
+// sauvegarde chaque 10 sec
+setInterval(saveData,10000);
+
+</script>
 </body>
 </html>
