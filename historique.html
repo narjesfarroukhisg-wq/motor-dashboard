@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Archive Historique</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+padding:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:#1e293b;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #334155;
+text-align:center;
+}
+
+th{
+background:#334155;
+}
+
+button,input{
+padding:8px;
+margin:5px;
+border-radius:6px;
+border:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>Archive des Mesures</h2>
+
+<input type="date" id="searchDate">
+<button onclick="loadDay()">Rechercher</button>
+
+<button onclick="window.location.href='index.html'">
+⬅ Retour Live
+</button>
+
+<br><br>
+
+<table id="historyTable">
+
+<tr>
+<th>Date</th>
+<th>Heure</th>
+<th>Température</th>
+<th>Courant</th>
+<th>Tension</th>
+<th>Vibration</th>
+</tr>
+
+</table>
+
+<script>
+
+function loadDay(){
+
+let archive=
+JSON.parse(localStorage.getItem("motorArchive"))||{};
+
+let input=document.getElementById("searchDate").value;
+
+if(!input){
+alert("Choisir une date");
+return;
+}
+
+let selectedDate=
+new Date(input).toLocaleDateString();
+
+let table=document.getElementById("historyTable");
+
+table.innerHTML=`
+<tr>
+<th>Date</th>
+<th>Heure</th>
+<th>Température</th>
+<th>Courant</th>
+<th>Tension</th>
+<th>Vibration</th>
+</tr>
+`;
+
+if(!archive[selectedDate]){
+alert("Aucune donnée pour ce jour");
+return;
+}
+
+archive[selectedDate].forEach(data=>{
+
+let row=table.insertRow();
+
+row.insertCell(0).innerHTML=data.date;
+row.insertCell(1).innerHTML=data.time;
+row.insertCell(2).innerHTML=data.temp;
+row.insertCell(3).innerHTML=data.current;
+row.insertCell(4).innerHTML=data.voltage;
+row.insertCell(5).innerHTML=data.vibration;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
